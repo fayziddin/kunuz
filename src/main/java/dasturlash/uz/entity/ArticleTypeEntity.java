@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Setter
 @Getter
 @Entity
@@ -27,8 +29,8 @@ public class ArticleTypeEntity {
     private String nameEn;
 
     @Column(name = "visible")
-    private Boolean visible = Boolean.TRUE;
+    private Boolean visible;
 
     @Column(name = "created_date")
-    private String createdDate;
+    private LocalDateTime createdDate;
 }
