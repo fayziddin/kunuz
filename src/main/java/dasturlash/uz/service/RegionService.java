@@ -1,10 +1,7 @@
 package dasturlash.uz.service;
 
-import dasturlash.uz.dto.ArticleTypeDTO;
-import dasturlash.uz.dto.ArticleTypeShortInfo;
 import dasturlash.uz.dto.RegionDTO;
 import dasturlash.uz.dto.RegionShortInfo;
-import dasturlash.uz.entity.ArticleTypeEntity;
 import dasturlash.uz.entity.RegionEntity;
 import dasturlash.uz.enums.Language;
 import dasturlash.uz.repository.RegionRepository;
@@ -39,7 +36,7 @@ public class RegionService {
         return dto;
     }
 
-    public Boolean update(@Valid RegionDTO dto, Long id) {
+    public Boolean update(RegionDTO dto, Long id) {
         Optional<RegionEntity> optional = repository.findById(id);
         if(optional.isEmpty()){
             return false;
