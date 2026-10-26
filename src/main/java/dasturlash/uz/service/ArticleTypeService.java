@@ -92,7 +92,7 @@ public class ArticleTypeService {
                 case ru -> {shortInfo.setName(entity.getNameRu());}
                 case en -> {shortInfo.setName(entity.getNameEn());}
             }
-            shortInfo.setKey(lang);
+            shortInfo.setKey(entity.getOrderNumber());
             shortInfoList.add(shortInfo);
         }
         return shortInfoList;

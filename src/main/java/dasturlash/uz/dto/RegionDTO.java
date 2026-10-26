@@ -5,9 +5,13 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Setter
 @Getter
 public class RegionDTO {
+    private Long id;
+
     @JsonProperty("order_number")
     private Integer orderNumber;
 
@@ -22,4 +26,8 @@ public class RegionDTO {
     @JsonProperty("name_en")
     @NotBlank(message = "name_en required")
     private String nameEn;
+
+    private Boolean visible;
+
+    private LocalDateTime createdDate;
 }

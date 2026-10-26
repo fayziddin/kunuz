@@ -5,7 +5,6 @@ import dasturlash.uz.dto.ProfileFilterDTO;
 import dasturlash.uz.entity.ProfileEntity;
 import dasturlash.uz.repository.ProfileCustomRepository;
 import dasturlash.uz.repository.ProfileRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
