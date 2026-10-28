@@ -97,4 +97,8 @@ public class ArticleTypeService {
         }
         return shortInfoList;
     }
+
+    public List<ArticleTypeEntity> findByIdList(Integer[] ids){
+        return repository.findAllByIdIn(ids);
+    }
 }

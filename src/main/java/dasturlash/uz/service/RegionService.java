@@ -91,4 +91,8 @@ public class RegionService {
         }
         return shortInfoList;
     }
+
+    public RegionEntity findById(Long id){
+        return repository.findById(id).orElse(null);
+    }
 }

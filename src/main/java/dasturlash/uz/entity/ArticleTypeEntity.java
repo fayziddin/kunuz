@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -33,4 +34,7 @@ public class ArticleTypeEntity {
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;
+
+    @ManyToMany(mappedBy = "articleTypeSet")
+    private Set<ArticleEntity> articleSet;
 }

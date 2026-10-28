@@ -103,4 +103,8 @@ public class ProfileService {
         }
         return new PageImpl<>(dtoList, PageRequest.of(page, size), totalItems);
     }
+
+    public ProfileEntity findById(Long id){
+        return repository.findById(id).orElse(null);
+    }
 }

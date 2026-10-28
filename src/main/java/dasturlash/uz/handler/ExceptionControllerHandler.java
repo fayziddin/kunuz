@@ -1,4 +1,4 @@
-package dasturlash.uz.controller;
+package dasturlash.uz.handler;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
