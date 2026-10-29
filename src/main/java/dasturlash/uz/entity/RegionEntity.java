@@ -33,4 +33,7 @@ public class RegionEntity {
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;
+
+    @Column(name = "region_key", nullable = false, unique = true)
+    private String regionKey;
 }

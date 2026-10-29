@@ -1,8 +1,8 @@
 package dasturlash.uz.controller;
 
 import dasturlash.uz.dto.RegionDTO;
-import dasturlash.uz.dto.RegionShortInfo;
 import dasturlash.uz.enums.Language;
+import dasturlash.uz.mapper.RegionMapper;
 import dasturlash.uz.service.RegionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/region")
+@RequestMapping("/api/v1/region")
 @RequiredArgsConstructor
 public class RegionController {
     private final RegionService service;
@@ -27,16 +27,15 @@ public class RegionController {
     //2. Update by id (ADMIN)
     //    (key,name_uz, name_ru, name_en)
     @PutMapping("/{id}")
-    public ResponseEntity<Boolean> update(@Valid @RequestBody RegionDTO dto,
+    public ResponseEntity<RegionDTO> update(@Valid @RequestBody RegionDTO dto,
                                           @PathVariable Long id){
         return ResponseEntity.ok(service.update(dto, id));
     }
 
     // 3. Delete by id (ADMIN)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
-        service.delete(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Boolean> delete(@PathVariable Long id){
+        return ResponseEntity.ok(service.delete(id));
     }
 
     // 4. Get List (ADMIN)
@@ -49,7 +48,7 @@ public class RegionController {
     // 5. Get By Lang (Language keladi shu language dagi name larini berib yuboramiz)
     //    (id,key,name) (name ga tegishli name_.. dagi qiymat qo'yiladi.) (visible true)
     @GetMapping("/by-lang")
-    public ResponseEntity<List<RegionShortInfo>> getByLang(@RequestParam("lang") Language lang){
+    public ResponseEntity<List<RegionMapper>> getByLang(@RequestHeader(name = "Accept-Language", defaultValue = "uz") Language lang){
         return ResponseEntity.ok(service.getByLang(lang));
     }
 }

@@ -39,6 +39,9 @@ public class ArticleDTO {
     @JsonProperty("article_type")
     private Integer[] articleType;
 
+    @JsonProperty("shared_count")
+    private Integer sharedCount;
+
     private ArticleStatus status;
 
     private LocalDateTime createdDate;

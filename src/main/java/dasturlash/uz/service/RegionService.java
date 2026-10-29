@@ -1,11 +1,10 @@
 package dasturlash.uz.service;
 
 import dasturlash.uz.dto.RegionDTO;
-import dasturlash.uz.dto.RegionShortInfo;
 import dasturlash.uz.entity.RegionEntity;
 import dasturlash.uz.enums.Language;
+import dasturlash.uz.mapper.RegionMapper;
 import dasturlash.uz.repository.RegionRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +19,10 @@ public class RegionService {
     private final RegionRepository repository;
 
     public RegionDTO create(RegionDTO dto) {
+        Optional<RegionEntity> optional = repository.findByRegionKey(dto.getRegionKey());
+        if(optional.isPresent()){
+            throw new IllegalArgumentException("Key is present");
+        }
         RegionEntity entity = new RegionEntity();
         entity.setOrderNumber(dto.getOrderNumber());
         entity.setNameUz(dto.getNameUz());
@@ -27,6 +30,7 @@ public class RegionService {
         entity.setNameEn(dto.getNameEn());
         entity.setVisible(Boolean.TRUE);
         entity.setCreatedDate(LocalDateTime.now());
+        entity.setRegionKey(dto.getRegionKey());
 
         repository.save(entity);
 
@@ -36,26 +40,43 @@ public class RegionService {
         return dto;
     }
 
-    public Boolean update(RegionDTO dto, Long id) {
-        Optional<RegionEntity> optional = repository.findById(id);
+    public RegionDTO update(RegionDTO dto, Long id) {
+        Optional<RegionEntity> optional = repository.findByIdAndVisibleIsTrue(id);
         if(optional.isEmpty()){
-            return false;
+            throw new IllegalArgumentException("Region not found");
         }
+
+        Optional<RegionEntity> optionalByKey = repository.findByRegionKey(dto.getRegionKey());
+        if(optionalByKey.isPresent() && !id.equals(optionalByKey.get().getId())){
+            throw new IllegalArgumentException("Key is present");
+        }
+
         RegionEntity entity = optional.get();
         entity.setOrderNumber(dto.getOrderNumber());
         entity.setNameUz(dto.getNameUz());
         entity.setNameRu(dto.getNameRu());
         entity.setNameEn(dto.getNameEn());
+        entity.setRegionKey(dto.getRegionKey());
+        repository.save(entity);
+        dto.setId(entity.getId());
+        dto.setVisible(entity.getVisible());
+        dto.setCreatedDate(entity.getCreatedDate());
+        return dto;
+    }
+
+    public Boolean delete(Long id) {
+        Optional<RegionEntity> optional = repository.findById(id);
+        if(optional.isEmpty()){
+            return false;
+        }
+        RegionEntity entity = optional.get();
+        entity.setVisible(Boolean.FALSE);
         repository.save(entity);
         return true;
     }
 
-    public void delete(Long id) {
-        repository.deleteById(id);
-    }
-
     public List<RegionDTO> getAll() {
-        Iterable<RegionEntity> iterable = repository.findAll();
+        Iterable<RegionEntity> iterable = repository.findAllVisibleSorted();
         List<RegionDTO> dtoList = new LinkedList<>();
         for(RegionEntity entity : iterable){
             dtoList.add(toDto(entity));
@@ -72,27 +93,12 @@ public class RegionService {
         dto.setNameEn(entity.getNameEn());
         dto.setVisible(entity.getVisible());
         dto.setCreatedDate(entity.getCreatedDate());
+        dto.setRegionKey(entity.getRegionKey());
         return dto;
     }
 
-    public List<RegionShortInfo> getByLang(Language lang) {
-        Iterable<RegionEntity> entityList = repository.findAll();
-        List<RegionShortInfo> shortInfoList = new LinkedList<>();
-        for (RegionEntity entity : entityList){
-            RegionShortInfo shortInfo = new RegionShortInfo();
-            shortInfo.setId(entity.getId());
-            switch (lang){
-                case uz -> {shortInfo.setName(entity.getNameUz());}
-                case ru -> {shortInfo.setName(entity.getNameRu());}
-                case en -> {shortInfo.setName(entity.getNameEn());}
-            }
-            shortInfo.setKey(entity.getOrderNumber());
-            shortInfoList.add(shortInfo);
-        }
-        return shortInfoList;
-    }
-
-    public RegionEntity findById(Long id){
-        return repository.findById(id).orElse(null);
+    public List<RegionMapper> getByLang(Language lang) {
+        List<RegionMapper> mapperlist = repository.getByLang(lang.name());
+        return mapperlist;
     }
 }

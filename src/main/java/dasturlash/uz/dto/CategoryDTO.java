@@ -30,4 +30,8 @@ public class CategoryDTO {
     private Boolean visible;
 
     private LocalDateTime createdDate;
+
+    @JsonProperty("category_key")
+    @NotBlank(message = "category_key is required")
+    private String categoryKey;
 }

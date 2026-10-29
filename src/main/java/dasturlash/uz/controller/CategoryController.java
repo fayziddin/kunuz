@@ -1,8 +1,8 @@
 package dasturlash.uz.controller;
 
 import dasturlash.uz.dto.CategoryDTO;
-import dasturlash.uz.dto.CategoryShortInfo;
 import dasturlash.uz.enums.Language;
+import dasturlash.uz.mapper.CategoryMapper;
 import dasturlash.uz.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/api/v1/category")
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService service;
@@ -27,16 +27,15 @@ public class CategoryController {
     // 2. Update by id (ADMIN)
     //     (order_number,name_uz, name_ru, name_en)
     @PutMapping("/{id}")
-    public ResponseEntity<Boolean> update(@Valid @RequestBody CategoryDTO request,
+    public ResponseEntity<CategoryDTO> update(@Valid @RequestBody CategoryDTO request,
                                           @PathVariable Long id){
         return ResponseEntity.ok(service.update(request, id));
     }
 
     // 3. Delete by id (ADMIN)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
-        service.delete(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Boolean> delete(@PathVariable Long id){
+        return ResponseEntity.ok(service.delete(id));
     }
 
     // 4. Get List (ADMIN) - order by order_number
@@ -49,7 +48,7 @@ public class CategoryController {
     // 5. Get By Lang (Language keladi shu language dagi name larini berib yuboramiz)
     //      (id,order_number,name) (name ga tegishli name_... dagi qiymat qo'yiladi.)
     @GetMapping("/by-lang")
-    public ResponseEntity<List<CategoryShortInfo>> getByLang(@RequestParam("lang") Language lang){
+    public ResponseEntity<List<CategoryMapper>> getByLang(@RequestHeader(name = "Accept-Language", defaultValue = "uz") Language lang){
         return ResponseEntity.ok(service.getByLang(lang));
     }
 }

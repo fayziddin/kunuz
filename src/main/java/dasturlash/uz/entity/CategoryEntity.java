@@ -33,4 +33,7 @@ public class CategoryEntity {
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;
+
+    @Column(name = "category_key", nullable = false)
+    private String categoryKey;
 }

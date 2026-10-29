@@ -27,6 +27,10 @@ public class RegionDTO {
     @NotBlank(message = "name_en required")
     private String nameEn;
 
+    @NotBlank(message = "region_key is required")
+    @JsonProperty("region_key")
+    private String regionKey;
+
     private Boolean visible;
 
     private LocalDateTime createdDate;
