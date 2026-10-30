@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/article")
+@RequestMapping("/api/v1/article")
 @RequiredArgsConstructor
 public class ArticleController {
 

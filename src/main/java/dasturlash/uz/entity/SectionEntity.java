@@ -10,8 +10,8 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
-@Table(name = "article_type")
-public class ArticleTypeEntity {
+@Table(name = "section")
+public class SectionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -35,9 +35,9 @@ public class ArticleTypeEntity {
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 
-    @Column(name = "article_type_key", nullable = false, unique = true)
-    private String articleTypeKey;
+    @Column(name = "section_key", nullable = false, unique = true)
+    private String sectionKey;
 
-    @ManyToMany(mappedBy = "articleTypeSet")
+    @ManyToMany(mappedBy = "sectionSet")
     private Set<ArticleEntity> articleSet;
 }

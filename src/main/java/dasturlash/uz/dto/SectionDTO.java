@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Setter
 @Getter
-public class ArticleTypeDTO {
+public class SectionDTO {
     private Long id;
 
     @JsonProperty("order_number")
@@ -31,7 +31,7 @@ public class ArticleTypeDTO {
 
     private LocalDateTime createdDate;
 
-    @JsonProperty("article_type_key")
-    @NotBlank(message = "article_type_key required")
-    private String articleTypeKey;
+    @JsonProperty("section_key")
+    @NotBlank(message = "section_key required")
+    private String sectionKey;
 }

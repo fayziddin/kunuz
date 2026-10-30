@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -71,8 +70,8 @@ public class ArticleEntity {
     private Integer viewCount;
 
     @ManyToMany
-    @JoinTable(name = "article_type_list",
+    @JoinTable(name = "article_section_list",
             joinColumns = @JoinColumn(name = "article_id"),
-            inverseJoinColumns = @JoinColumn(name = "article_type_id"))
-    private Set<ArticleTypeEntity> articleTypeSet;
+            inverseJoinColumns = @JoinColumn(name = "section_id"))
+    private Set<SectionEntity> sectionSet;
 }

@@ -2,7 +2,7 @@ package dasturlash.uz.service;
 
 import dasturlash.uz.dto.ArticleDTO;
 import dasturlash.uz.entity.ArticleEntity;
-import dasturlash.uz.entity.ArticleTypeEntity;
+import dasturlash.uz.entity.SectionEntity;
 import dasturlash.uz.entity.CategoryEntity;
 import dasturlash.uz.entity.RegionEntity;
 import dasturlash.uz.enums.ArticleStatus;
@@ -20,12 +20,12 @@ public class ArticleService {
     private final ArticleRepository repository;
     private final RegionService regionService;
     private final CategoryService categoryService;
-    private final ArticleTypeService articleTypeService;
+    private final SectionService sectionService;
 
     public ArticleDTO create(@Valid ArticleDTO dto) {
 //        RegionEntity region = regionService.findById(dto.getRegionId());
 //        CategoryEntity category = categoryService.findById(dto.getCategoryId());
-//        List<ArticleTypeEntity> articleTypeEntities = articleTypeService.findByIdList(dto.getArticleType());
+//        List<SectionEntity> articleTypeEntities = sectionService.findByIdList(dto.getArticleType());
 
         RegionEntity region = new RegionEntity();
         region.setId(dto.getRegionId());
@@ -33,11 +33,11 @@ public class ArticleService {
         CategoryEntity category = new CategoryEntity();
         category.setId(dto.getCategoryId());
 
-        List<ArticleTypeEntity> articleTypeEntities = new LinkedList<>();
-        for (Integer articleId : dto.getArticleType()){
-            ArticleTypeEntity articleTypeEntity = new ArticleTypeEntity();
-            articleTypeEntity.setId(articleId.longValue());
-            articleTypeEntities.add(articleTypeEntity);
+        List<SectionEntity> sectionEntities = new LinkedList<>();
+        for (Integer sectionId : dto.getSectionList()){
+            SectionEntity sectionEntity = new SectionEntity();
+            sectionEntity.setId(sectionId.longValue());
+            sectionEntities.add(sectionEntity);
         }
 
         ArticleEntity entity = new ArticleEntity();
@@ -50,7 +50,7 @@ public class ArticleService {
         entity.setStatus(ArticleStatus.NotPublished);
         entity.setCreatedDate(LocalDateTime.now());
         entity.setVisible(Boolean.TRUE);
-        entity.setArticleTypeSet(new HashSet<>(articleTypeEntities));
+        entity.setSectionSet(new HashSet<>(sectionEntities));
 
         repository.save(entity);
 

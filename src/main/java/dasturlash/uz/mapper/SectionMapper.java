@@ -1,8 +1,8 @@
 package dasturlash.uz.mapper;
 
-public interface ArticleTypeMapper {
+public interface SectionMapper {
     Long getId();
     String getName();
-    String getArticleTypeKey();
+    String sectionKey();
     Integer getOrderNumber();
 }

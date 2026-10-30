@@ -36,8 +36,8 @@ public class ArticleDTO {
     private Long categoryId;
 
     @NotEmpty(message = "Article type is required")
-    @JsonProperty("article_type")
-    private Integer[] articleType;
+    @JsonProperty("section_list")
+    private Integer[] sectionList;
 
     @JsonProperty("shared_count")
     private Integer sharedCount;
