@@ -2,7 +2,7 @@ package dasturlash.uz.controller;
 
 import dasturlash.uz.dto.ArticleTypeDTO;
 import dasturlash.uz.enums.Language;
-import dasturlash.uz.dto.ArticleTypeShortInfo;
+import dasturlash.uz.mapper.ArticleTypeMapper;
 import dasturlash.uz.service.ArticleTypeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,16 +28,15 @@ public class ArticleTypeController {
     //2. Update by id (ADMIN)
     //    (order_number,name_uz, name_ru, name_en)
     @PutMapping("/{id}")
-    public ResponseEntity<Boolean> update(@Valid @RequestBody ArticleTypeDTO request,
+    public ResponseEntity<ArticleTypeDTO> update(@Valid @RequestBody ArticleTypeDTO request,
                                           @PathVariable("id") Long id){
         return ResponseEntity.ok(service.update(id, request));
     }
 
     //3. Delete by id (ADMIN)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable("id") Long id){
-        service.deleteById(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Boolean> deleteById(@PathVariable("id") Long id){
+        return ResponseEntity.ok(service.deleteById(id));
     }
 
     // 4. Get List (ADMIN) (Pagination)
@@ -50,7 +49,9 @@ public class ArticleTypeController {
     // 5. Get By Lang (Language keladi shu language dagi name larini berib yuboramiz)
     //    (id,key,name) (name ga tegishli name_.. dagi qiymat qo'yiladi.)
     @GetMapping("/by-lang")
-    public ResponseEntity<List<ArticleTypeShortInfo>> getByLang(@RequestParam("lang") Language lang){
-        return ResponseEntity.ok(service.getByLang(lang));
+    public ResponseEntity<List<ArticleTypeMapper>> getByLang(@RequestHeader(name = "Accept-Language", defaultValue = "uz") Language lang,
+                                                             @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                                             @RequestParam(value = "size", defaultValue = "50") Integer size){
+        return ResponseEntity.ok(service.getByLang(lang, page-1, size));
     }
 }

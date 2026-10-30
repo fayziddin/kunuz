@@ -30,4 +30,8 @@ public class ArticleTypeDTO {
     private Boolean visible;
 
     private LocalDateTime createdDate;
+
+    @JsonProperty("article_type_key")
+    @NotBlank(message = "article_type_key required")
+    private String articleTypeKey;
 }

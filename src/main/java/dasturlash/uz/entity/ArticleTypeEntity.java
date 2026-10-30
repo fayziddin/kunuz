@@ -35,6 +35,9 @@ public class ArticleTypeEntity {
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 
+    @Column(name = "article_type_key", nullable = false, unique = true)
+    private String articleTypeKey;
+
     @ManyToMany(mappedBy = "articleTypeSet")
     private Set<ArticleEntity> articleSet;
 }
