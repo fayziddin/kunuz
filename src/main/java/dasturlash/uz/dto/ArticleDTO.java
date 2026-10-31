@@ -1,7 +1,7 @@
 package dasturlash.uz.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dasturlash.uz.enums.ArticleStatus;
+import dasturlash.uz.enums.ArticleStatusEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -42,7 +42,7 @@ public class ArticleDTO {
     @JsonProperty("shared_count")
     private Integer sharedCount;
 
-    private ArticleStatus status;
+    private ArticleStatusEnum status;
 
     private LocalDateTime createdDate;
 

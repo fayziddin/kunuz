@@ -1,5 +1,5 @@
 package dasturlash.uz.enums;
 
-public enum ArticleStatus {
+public enum ArticleStatusEnum {
     Published,NotPublished
 }

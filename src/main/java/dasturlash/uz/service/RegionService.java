@@ -2,7 +2,7 @@ package dasturlash.uz.service;
 
 import dasturlash.uz.dto.RegionDTO;
 import dasturlash.uz.entity.RegionEntity;
-import dasturlash.uz.enums.Language;
+import dasturlash.uz.enums.LanguageEnum;
 import dasturlash.uz.mapper.RegionMapper;
 import dasturlash.uz.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;
@@ -97,7 +97,7 @@ public class RegionService {
         return dto;
     }
 
-    public List<RegionMapper> getByLang(Language lang) {
+    public List<RegionMapper> getByLang(LanguageEnum lang) {
         List<RegionMapper> mapperlist = repository.getByLang(lang.name());
         return mapperlist;
     }

@@ -1,15 +1,19 @@
 package dasturlash.uz.service;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import dasturlash.uz.dto.ProfileDTO;
 import dasturlash.uz.dto.ProfileFilterDTO;
 import dasturlash.uz.entity.ProfileEntity;
 import dasturlash.uz.repository.ProfileCustomRepository;
 import dasturlash.uz.repository.ProfileRepository;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,19 +26,27 @@ import java.util.Optional;
 public class ProfileService {
     private final ProfileRepository repository;
     private final ProfileCustomRepository customRepository;
+    private final ProfileRoleService profileRoleService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     public ProfileDTO create(ProfileDTO dto) {
+        Optional<ProfileEntity> optionalByUsername = repository.findByUsername(dto.getUsername());
+        if(optionalByUsername.isPresent()){
+            throw new IllegalArgumentException("username is present");
+        }
         ProfileEntity entity = new ProfileEntity();
         entity.setName(dto.getName());
         entity.setSurname(dto.getSurname());
-        entity.setEmail(dto.getEmail());
-        entity.setPhone(dto.getPhone());
-        entity.setPassword(dto.getPassword());
+        entity.setUsername(dto.getUsername());
+        entity.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
         entity.setStatus(dto.getStatus());
-        entity.setRole(dto.getRole());
         entity.setVisible(Boolean.TRUE);
         entity.setCreatedDate(LocalDateTime.now());
+        // Save profile
         repository.save(entity);
+        // Save role
+        profileRoleService.save(dto.getId(), dto.getRoleList());
 
         dto.setId(entity.getId());
         dto.setVisible(entity.getVisible());
@@ -42,21 +54,27 @@ public class ProfileService {
         return dto;
     }
 
-    public Boolean update(Long id, ProfileDTO dto) {
-        Optional<ProfileEntity> optional = repository.findById(id);
+    public ProfileDTO update(Long id, ProfileDTO dto) {
+        Optional<ProfileEntity> optionalByUsername = repository.findByUsername(dto.getUsername());
+        if(optionalByUsername.isPresent() && !id.equals(optionalByUsername.get().getId())){
+            throw new IllegalArgumentException("username is present");
+        }
+        Optional<ProfileEntity> optional = repository.findByIdAndVisibleIsTrue(id);
         if (optional.isEmpty()) {
-            return null;
+            throw new IllegalArgumentException("Profile not found");
         }
         ProfileEntity entity = optional.get();
         entity.setName(dto.getName());
         entity.setSurname(dto.getSurname());
-        entity.setEmail(dto.getEmail());
-        entity.setPhone(dto.getPhone());
-        entity.setPassword(dto.getPassword());
+        entity.setUsername(dto.getUsername());
         entity.setStatus(dto.getStatus());
-        entity.setRole(dto.getRole());
+        // Save profile
         repository.save(entity);
-        return true;
+        // Save role
+        profileRoleService.save(id, dto.getRoleList());
+        ProfileDTO response = toDto(entity);
+        response.setRoleList(dto.getRoleList());
+        return response;
     }
 
     public Page<ProfileDTO> getAllPagination(Integer page, Integer size) {
@@ -77,11 +95,9 @@ public class ProfileService {
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setSurname(entity.getSurname());
-        dto.setEmail(entity.getEmail());
-        dto.setPhone(entity.getPhone());
+        dto.setUsername(entity.getUsername());
         dto.setPassword(entity.getPassword());
         dto.setStatus(entity.getStatus());
-        dto.setRole(entity.getRole());
         dto.setVisible(entity.getVisible());
         dto.setCreatedDate(entity.getCreatedDate());
         dto.setPhotoId(entity.getPhotoId());
@@ -89,8 +105,15 @@ public class ProfileService {
         return dto;
     }
 
-    public void deleteById(Long id) {
-        repository.deleteById(id);
+    public Boolean deleteById(Long id) {
+        Optional<ProfileEntity> optional = repository.findByIdAndVisibleIsTrue(id);
+        if(optional.isEmpty()){
+            return false;
+        }
+        ProfileEntity entity = optional.get();
+        entity.setVisible(false);
+        repository.save(entity);
+        return true;
     }
 
     public Page<ProfileDTO> filter(ProfileFilterDTO filterDto, Integer page, Integer size) {
@@ -102,9 +125,5 @@ public class ProfileService {
             dtoList.add(toDto(entity));
         }
         return new PageImpl<>(dtoList, PageRequest.of(page, size), totalItems);
-    }
-
-    public ProfileEntity findById(Long id){
-        return repository.findById(id).orElse(null);
     }
 }

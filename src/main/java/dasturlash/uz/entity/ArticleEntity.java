@@ -1,6 +1,6 @@
 package dasturlash.uz.entity;
 
-import dasturlash.uz.enums.ArticleStatus;
+import dasturlash.uz.enums.ArticleStatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,7 +55,7 @@ public class ArticleEntity {
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private ArticleStatus status;
+    private ArticleStatusEnum status;
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;

@@ -1,7 +1,8 @@
 package dasturlash.uz.dto;
 
-import dasturlash.uz.enums.ProfileRole;
-import dasturlash.uz.enums.ProfileStatus;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import dasturlash.uz.enums.ProfileRoleEnum;
+import dasturlash.uz.enums.ProfileStatusEnum;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
@@ -9,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -23,23 +25,20 @@ public class ProfileDTO {
     @Size(min = 3, max = 80, message = "surname length must be between 3 and 80")
     private String surname;
 
-    @Email(message = "invalid email format")
-    private String email;
-
-    @NotBlank(message = "phone is required")
-    @Pattern(regexp = "^\\d{12}$", message = "phone must be 12 digits")
-    private String phone;
+    @NotBlank(message = "username is required")
+    private String username;
 
     @NotBlank(message = "password is required")
     private String password;
 
     @NotNull(message = "status is required")
     @Enumerated(EnumType.STRING)
-    private ProfileStatus status;
+    private ProfileStatusEnum status;
 
-    @NotNull(message = "role is required")
+    @NotEmpty(message = "role_list is required")
+    @JsonProperty("role_list")
     @Enumerated(EnumType.STRING)
-    private ProfileRole role;
+    private List<ProfileRoleEnum> roleList;
 
     private Boolean visible;
 

@@ -5,7 +5,7 @@ import dasturlash.uz.entity.ArticleEntity;
 import dasturlash.uz.entity.SectionEntity;
 import dasturlash.uz.entity.CategoryEntity;
 import dasturlash.uz.entity.RegionEntity;
-import dasturlash.uz.enums.ArticleStatus;
+import dasturlash.uz.enums.ArticleStatusEnum;
 import dasturlash.uz.repository.ArticleRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +47,7 @@ public class ArticleService {
         entity.setImageId(dto.getImageId());
         entity.setRegion(region);
         entity.setCategory(category);
-        entity.setStatus(ArticleStatus.NotPublished);
+        entity.setStatus(ArticleStatusEnum.NotPublished);
         entity.setCreatedDate(LocalDateTime.now());
         entity.setVisible(Boolean.TRUE);
         entity.setSectionSet(new HashSet<>(sectionEntities));

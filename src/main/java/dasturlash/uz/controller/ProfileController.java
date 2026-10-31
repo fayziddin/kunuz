@@ -29,7 +29,7 @@ public class ProfileController {
 
     // 2. Update Profile (ADMIN)
     @PutMapping("/{id}")
-    public ResponseEntity<Boolean> update(@Valid @RequestBody ProfileDTO request,
+    public ResponseEntity<ProfileDTO> update(@Valid @RequestBody ProfileDTO request,
                                           @PathVariable("id") Long id){
         return ResponseEntity.ok(service.update(id, request));
     }
@@ -43,9 +43,8 @@ public class ProfileController {
 
     // 5. Delete Profile By id (ADMIN)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable("id") Long id){
-        service.deleteById(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Boolean> deleteById(@PathVariable("id") Long id){
+        return ResponseEntity.ok(service.deleteById(id));
     }
 
     // 7. Filter (name,surname,phone,role,created_date_from,created_date_to)

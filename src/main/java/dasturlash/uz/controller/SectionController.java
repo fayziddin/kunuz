@@ -1,7 +1,7 @@
 package dasturlash.uz.controller;
 
 import dasturlash.uz.dto.SectionDTO;
-import dasturlash.uz.enums.Language;
+import dasturlash.uz.enums.LanguageEnum;
 import dasturlash.uz.mapper.SectionMapper;
 import dasturlash.uz.service.SectionService;
 import jakarta.validation.Valid;
@@ -49,7 +49,7 @@ public class SectionController {
     // 5. Get By Lang (Language keladi shu language dagi name larini berib yuboramiz)
     //    (id,key,name) (name ga tegishli name_.. dagi qiymat qo'yiladi.)
     @GetMapping("/by-lang")
-    public ResponseEntity<List<SectionMapper>> getByLang(@RequestHeader(name = "Accept-Language", defaultValue = "uz") Language lang,
+    public ResponseEntity<List<SectionMapper>> getByLang(@RequestHeader(name = "Accept-Language", defaultValue = "uz") LanguageEnum lang,
                                                          @RequestParam(value = "page", defaultValue = "1") Integer page,
                                                          @RequestParam(value = "size", defaultValue = "50") Integer size){
         return ResponseEntity.ok(service.getByLang(lang, page-1, size));

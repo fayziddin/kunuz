@@ -2,7 +2,7 @@ package dasturlash.uz.service;
 
 import dasturlash.uz.dto.CategoryDTO;
 import dasturlash.uz.entity.CategoryEntity;
-import dasturlash.uz.enums.Language;
+import dasturlash.uz.enums.LanguageEnum;
 import dasturlash.uz.mapper.CategoryMapper;
 import dasturlash.uz.repository.CategoryRepository;
 import jakarta.validation.Valid;
@@ -91,7 +91,7 @@ public class CategoryService {
         return dto;
     }
 
-    public List<CategoryMapper> getByLang(Language lang) {
+    public List<CategoryMapper> getByLang(LanguageEnum lang) {
         List<CategoryMapper> mapperList = repository.getAllByLang(lang.name());
         return mapperList;
     }

@@ -1,5 +1,5 @@
 package dasturlash.uz.enums;
 
-public enum ProfileStatus {
+public enum ProfileStatusEnum {
     ACTIVE,NOT_ACTIVE
 }

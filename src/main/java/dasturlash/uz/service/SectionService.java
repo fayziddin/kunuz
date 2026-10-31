@@ -2,7 +2,7 @@ package dasturlash.uz.service;
 
 import dasturlash.uz.dto.SectionDTO;
 import dasturlash.uz.entity.SectionEntity;
-import dasturlash.uz.enums.Language;
+import dasturlash.uz.enums.LanguageEnum;
 import dasturlash.uz.mapper.SectionMapper;
 import dasturlash.uz.repository.SectionRepository;
 import jakarta.validation.Valid;
@@ -94,7 +94,7 @@ public class SectionService {
         return dto;
     }
 
-    public List<SectionMapper> getByLang(Language lang, Integer page, Integer size) {
+    public List<SectionMapper> getByLang(LanguageEnum lang, Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "orderNumber"));
         List<SectionMapper> shortInfoList = repository.getByLang(lang.name(), pageRequest);
         return shortInfoList;

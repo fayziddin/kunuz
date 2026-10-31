@@ -1,12 +1,13 @@
 package dasturlash.uz.entity;
 
-import dasturlash.uz.enums.ProfileRole;
-import dasturlash.uz.enums.ProfileStatus;
+import dasturlash.uz.enums.ProfileRoleEnum;
+import dasturlash.uz.enums.ProfileStatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -24,22 +25,18 @@ public class ProfileEntity {
     @Column(name = "surname", nullable = false, length = 80)
     private String surname;
 
-    @Column(name = "email", length = 80)
-    private String email;
-
-    @Column(name = "phone", nullable = false, unique = true, length = 12)
-    private String phone;
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private ProfileStatus status;
+    private ProfileStatusEnum status;
 
-    @Column(name = "role", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private ProfileRole role;
+    @OneToMany(mappedBy = "profile")
+    private List<ProfileRoleEntity> roleList;
 
     @Column(name = "visible")
     private Boolean visible = Boolean.TRUE;

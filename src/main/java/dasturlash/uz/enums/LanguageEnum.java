@@ -1,5 +1,5 @@
 package dasturlash.uz.enums;
 
-public enum Language {
+public enum LanguageEnum {
     en,uz,ru
 }

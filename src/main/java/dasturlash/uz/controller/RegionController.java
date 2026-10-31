@@ -1,7 +1,7 @@
 package dasturlash.uz.controller;
 
 import dasturlash.uz.dto.RegionDTO;
-import dasturlash.uz.enums.Language;
+import dasturlash.uz.enums.LanguageEnum;
 import dasturlash.uz.mapper.RegionMapper;
 import dasturlash.uz.service.RegionService;
 import jakarta.validation.Valid;
@@ -48,7 +48,7 @@ public class RegionController {
     // 5. Get By Lang (Language keladi shu language dagi name larini berib yuboramiz)
     //    (id,key,name) (name ga tegishli name_.. dagi qiymat qo'yiladi.) (visible true)
     @GetMapping("/by-lang")
-    public ResponseEntity<List<RegionMapper>> getByLang(@RequestHeader(name = "Accept-Language", defaultValue = "uz") Language lang){
+    public ResponseEntity<List<RegionMapper>> getByLang(@RequestHeader(name = "Accept-Language", defaultValue = "uz") LanguageEnum lang){
         return ResponseEntity.ok(service.getByLang(lang));
     }
 }
