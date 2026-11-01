@@ -23,7 +23,7 @@ import java.util.Optional;
 public class SectionService {
     private final SectionRepository repository;
 
-    public SectionDTO create(@Valid SectionDTO dto) {
+    public SectionDTO create(SectionDTO dto) {
         Optional<SectionEntity> optional = repository.findBySectionKey(dto.getSectionKey());
         if(optional.isPresent()){
             throw new IllegalArgumentException("Key is present");
@@ -44,7 +44,7 @@ public class SectionService {
         return dto;
     }
 
-    public SectionDTO update(Long id, @Valid SectionDTO dto) {
+    public SectionDTO update(Integer id, SectionDTO dto) {
         Optional<SectionEntity> optionalByKey = repository.findBySectionKey(dto.getSectionKey());
         if(optionalByKey.isPresent() && !id.equals(optionalByKey.get().getId())){
             throw new IllegalArgumentException("Key is present");
@@ -65,7 +65,7 @@ public class SectionService {
         return toDto(entity);
     }
 
-    public Boolean deleteById(Long id) {
+    public Boolean deleteById(Integer id) {
         return repository.setVisibleById(id) == 1;
     }
 

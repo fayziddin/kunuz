@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface RegionRepository extends CrudRepository<RegionEntity, Long> {
+public interface RegionRepository extends CrudRepository<RegionEntity, Integer> {
     Optional<RegionEntity> findByRegionKey(String regionKey);
 
-    Optional<RegionEntity> findByIdAndVisibleIsTrue(Long id);
+    Optional<RegionEntity> findByIdAndVisibleIsTrue(Integer id);
 
     @Query("select r.id as id, " +
             "case :lang " +

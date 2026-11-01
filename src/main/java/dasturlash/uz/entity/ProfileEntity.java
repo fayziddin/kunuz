@@ -1,6 +1,5 @@
 package dasturlash.uz.entity;
 
-import dasturlash.uz.enums.ProfileRoleEnum;
 import dasturlash.uz.enums.ProfileStatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;

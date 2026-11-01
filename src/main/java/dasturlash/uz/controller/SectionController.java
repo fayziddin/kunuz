@@ -29,13 +29,13 @@ public class SectionController {
     //    (order_number,name_uz, name_ru, name_en)
     @PutMapping("/{id}")
     public ResponseEntity<SectionDTO> update(@Valid @RequestBody SectionDTO request,
-                                             @PathVariable("id") Long id){
+                                             @PathVariable("id") Integer id){
         return ResponseEntity.ok(service.update(id, request));
     }
 
     //3. Delete by id (ADMIN)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteById(@PathVariable("id") Long id){
+    public ResponseEntity<Boolean> deleteById(@PathVariable("id") Integer id){
         return ResponseEntity.ok(service.deleteById(id));
     }
 

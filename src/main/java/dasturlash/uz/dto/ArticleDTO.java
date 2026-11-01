@@ -14,6 +14,7 @@ import java.util.UUID;
 @Setter
 @Getter
 public class ArticleDTO {
+    // title,description,content,imageId, regionId, categoryList[], sectionList[]
     private UUID id;
 
     @NotBlank(message = "Title is required")
@@ -29,22 +30,13 @@ public class ArticleDTO {
 
     @NotNull(message = "Region is required")
     @JsonProperty("region_id")
-    private Long regionId;
+    private Integer regionId;
 
-    @NotNull(message = "Category is required")
-    @JsonProperty("category_id")
-    private Long categoryId;
+    @NotNull(message = "category_list is required")
+    @JsonProperty("category_list")
+    private Integer[] categoryList;
 
-    @NotEmpty(message = "Article type is required")
+    @NotEmpty(message = "section_list is required")
     @JsonProperty("section_list")
     private Integer[] sectionList;
-
-    @JsonProperty("shared_count")
-    private Integer sharedCount;
-
-    private ArticleStatusEnum status;
-
-    private LocalDateTime createdDate;
-
-    private Boolean visible;
 }

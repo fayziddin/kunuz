@@ -15,7 +15,7 @@ public class SectionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "order_number")
     private Integer orderNumber;
@@ -37,7 +37,4 @@ public class SectionEntity {
 
     @Column(name = "section_key", nullable = false, unique = true)
     private String sectionKey;
-
-    @ManyToMany(mappedBy = "sectionSet")
-    private Set<ArticleEntity> articleSet;
 }

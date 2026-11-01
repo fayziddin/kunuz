@@ -41,7 +41,7 @@ public class CategoryService {
         return dto;
     }
 
-    public CategoryDTO update(CategoryDTO dto, Long id) {
+    public CategoryDTO update(CategoryDTO dto, Integer id) {
         Optional<CategoryEntity> optional = repository.findByIdAndVisibleIsTrue(id);
         if(optional.isEmpty()){
             throw new IllegalArgumentException("Category not found");
@@ -65,7 +65,7 @@ public class CategoryService {
         return dto;
     }
 
-    public Boolean delete(Long id) {
+    public Boolean delete(Integer id) {
         return repository.setVisibleById(id) == 1;
     }
 

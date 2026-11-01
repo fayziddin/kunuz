@@ -40,7 +40,7 @@ public class RegionService {
         return dto;
     }
 
-    public RegionDTO update(RegionDTO dto, Long id) {
+    public RegionDTO update(RegionDTO dto, Integer id) {
         Optional<RegionEntity> optional = repository.findByIdAndVisibleIsTrue(id);
         if(optional.isEmpty()){
             throw new IllegalArgumentException("Region not found");
@@ -64,7 +64,7 @@ public class RegionService {
         return dto;
     }
 
-    public Boolean delete(Long id) {
+    public Boolean delete(Integer id) {
         Optional<RegionEntity> optional = repository.findById(id);
         if(optional.isEmpty()){
             return false;

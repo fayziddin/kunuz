@@ -28,13 +28,13 @@ public class RegionController {
     //    (key,name_uz, name_ru, name_en)
     @PutMapping("/{id}")
     public ResponseEntity<RegionDTO> update(@Valid @RequestBody RegionDTO dto,
-                                          @PathVariable Long id){
+                                          @PathVariable Integer id){
         return ResponseEntity.ok(service.update(dto, id));
     }
 
     // 3. Delete by id (ADMIN)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable Long id){
+    public ResponseEntity<Boolean> delete(@PathVariable Integer id){
         return ResponseEntity.ok(service.delete(id));
     }
 

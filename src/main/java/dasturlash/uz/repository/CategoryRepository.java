@@ -12,15 +12,15 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface CategoryRepository extends CrudRepository<CategoryEntity, Long> {
+public interface CategoryRepository extends CrudRepository<CategoryEntity, Integer> {
     Optional<CategoryEntity> findByCategoryKey(String categoryKey);
 
-    Optional<CategoryEntity> findByIdAndVisibleIsTrue(Long id);
+    Optional<CategoryEntity> findByIdAndVisibleIsTrue(Integer id);
 
     @Transactional
     @Modifying
     @Query("update CategoryEntity set visible = false where id = ?1")
-    int setVisibleById(Long id);
+    int setVisibleById(Integer id);
 
     @Query("from CategoryEntity where visible = true order by orderNumber asc")
     Iterable<CategoryEntity> findAllVisibleSorted();

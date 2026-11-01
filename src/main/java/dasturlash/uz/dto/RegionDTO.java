@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class RegionDTO {
-    private Long id;
+    private Integer id;
 
     @JsonProperty("order_number")
     private Integer orderNumber;

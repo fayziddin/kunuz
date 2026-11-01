@@ -14,16 +14,16 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface SectionRepository extends CrudRepository<SectionEntity, Long>, PagingAndSortingRepository<SectionEntity, Long> {
+public interface SectionRepository extends CrudRepository<SectionEntity, Integer>, PagingAndSortingRepository<SectionEntity, Integer> {
 
     Optional<SectionEntity> findBySectionKey(String sectionKey);
 
     @Transactional
     @Modifying
     @Query("update SectionEntity set visible = false where id = ?1")
-    int setVisibleById(Long id);
+    int setVisibleById(Integer id);
 
-    Optional<SectionEntity> findByIdAndVisibleIsTrue(Long id);
+    Optional<SectionEntity> findByIdAndVisibleIsTrue(Integer id);
 
     @Query("from SectionEntity where visible = true order by orderNumber asc")
     Page<SectionEntity> findAllVisibleSorted(Pageable pageRequest);
