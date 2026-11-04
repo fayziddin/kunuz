@@ -2,8 +2,12 @@ package dasturlash.uz.service;
 
 import dasturlash.uz.entity.ArticleCategoryEntity;
 import dasturlash.uz.entity.ArticleSectionEntity;
+import dasturlash.uz.mapper.ArticleShortInfoMapper;
 import dasturlash.uz.repository.ArticleSectionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,5 +44,14 @@ public class ArticleSectionService {
     public void save(UUID articleId, Integer[] sectionIds){
         deleteByArticleId(articleId);
         create(articleId, sectionIds);
+    }
+
+    public PageImpl<ArticleShortInfoMapper> getBooksBySectionId(Integer sectionId, Integer page, Integer size){
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<ArticleShortInfoMapper> pageResponse = repository.findBySectionId(sectionId, pageRequest);
+        Long totalItems = pageResponse.getTotalElements();
+        List<ArticleShortInfoMapper> mapperList = pageResponse.getContent();
+
+        return new PageImpl<>(mapperList, pageRequest, totalItems);
     }
 }

@@ -2,12 +2,16 @@ package dasturlash.uz.controller;
 
 import dasturlash.uz.dto.ArticleDTO;
 import dasturlash.uz.dto.ArticleStatusDTO;
+import dasturlash.uz.mapper.ArticleShortInfoMapper;
 import dasturlash.uz.service.ArticleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -51,4 +55,14 @@ public class ArticleController {
         return ResponseEntity.ok(service.changeStatus(id, request));
     }
 
+    // 5. Get Last N Article By sectionId  ordered_by_created_date desc
+    //         (Berilgan section (bo'lim) bo'yicha oxirgi N-ta published bo'lgan article ni return qiladi.)
+    //                 (Pagination bilan ishlaydigan qilish kerak)
+    // ArticleShortInfo
+    @GetMapping("/by-section")
+    public ResponseEntity<PageImpl<ArticleShortInfoMapper>> getBySectionId(@RequestParam(value = "section_id") Integer sectionId,
+                                                                           @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                                                           @RequestParam(value = "size", defaultValue = "50") Integer size){
+        return ResponseEntity.ok(service.getBySectionId(sectionId, page-1, size));
+    }
 }

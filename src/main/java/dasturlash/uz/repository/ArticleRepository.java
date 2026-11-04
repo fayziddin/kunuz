@@ -22,4 +22,6 @@ public interface ArticleRepository extends CrudRepository<ArticleEntity, UUID> {
     @Modifying
     @Query("update ArticleEntity set status = :status where id = :id and visible = true")
     int updateStatusById(@Param("id") UUID id, @Param("status") String status);
+
+
 }

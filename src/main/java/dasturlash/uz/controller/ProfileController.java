@@ -1,6 +1,6 @@
 package dasturlash.uz.controller;
 
-import dasturlash.uz.dto.ProfileDTO;
+import dasturlash.uz.dto.profile.ProfileDTO;
 import dasturlash.uz.dto.ProfileFilterDTO;
 import dasturlash.uz.service.ProfileService;
 import jakarta.validation.Valid;

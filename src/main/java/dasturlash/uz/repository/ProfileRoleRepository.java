@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 public interface ProfileRoleRepository extends CrudRepository<ProfileRoleEntity, Long> {
 
     @Transactional
@@ -18,4 +20,7 @@ public interface ProfileRoleRepository extends CrudRepository<ProfileRoleEntity,
     @Modifying
     @Query("delete from ProfileRoleEntity as r where r.profileId = ?1")
     void deleteByProfileId(Long profileId);
+
+    @Query("select roles from ProfileRoleEntity where profileId =?1")
+    List<ProfileRoleEnum> getRoleListByProfileId(Long profileId);
 }

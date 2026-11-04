@@ -1,14 +1,11 @@
 package dasturlash.uz.service;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
-import dasturlash.uz.dto.ProfileDTO;
+import dasturlash.uz.dto.profile.ProfileDTO;
 import dasturlash.uz.dto.ProfileFilterDTO;
 import dasturlash.uz.entity.ProfileEntity;
 import dasturlash.uz.repository.ProfileCustomRepository;
 import dasturlash.uz.repository.ProfileRepository;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +28,7 @@ public class ProfileService {
 
 
     public ProfileDTO create(ProfileDTO dto) {
-        Optional<ProfileEntity> optionalByUsername = repository.findByUsername(dto.getUsername());
+        Optional<ProfileEntity> optionalByUsername = repository.findByUsernameAndVisibleIsTrue(dto.getUsername());
         if(optionalByUsername.isPresent()){
             throw new IllegalArgumentException("username is present");
         }
@@ -55,7 +52,7 @@ public class ProfileService {
     }
 
     public ProfileDTO update(Long id, ProfileDTO dto) {
-        Optional<ProfileEntity> optionalByUsername = repository.findByUsername(dto.getUsername());
+        Optional<ProfileEntity> optionalByUsername = repository.findByUsernameAndVisibleIsTrue(dto.getUsername());
         if(optionalByUsername.isPresent() && !id.equals(optionalByUsername.get().getId())){
             throw new IllegalArgumentException("username is present");
         }

@@ -4,9 +4,13 @@ import dasturlash.uz.dto.ArticleDTO;
 import dasturlash.uz.dto.ArticleStatusDTO;
 import dasturlash.uz.entity.ArticleEntity;
 import dasturlash.uz.enums.ArticleStatusEnum;
+import dasturlash.uz.mapper.ArticleShortInfoMapper;
 import dasturlash.uz.repository.ArticleRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,7 +20,6 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ArticleService {
     private final ArticleRepository repository;
-    private final RegionService regionService;
     private final ArticleCategoryService articleCategoryService;
     private final ArticleSectionService articleSectionService;
 
@@ -69,5 +72,9 @@ public class ArticleService {
 
     public Boolean changeStatus(UUID id, ArticleStatusDTO request) {
         return repository.updateStatusById(id, request.getStatus().name()) == 1;
+    }
+
+    public PageImpl<ArticleShortInfoMapper> getBySectionId(Integer sectionId, Integer page, Integer size) {
+        return articleSectionService.getBooksBySectionId(sectionId, page, size);
     }
 }

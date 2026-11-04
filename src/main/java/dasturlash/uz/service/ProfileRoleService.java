@@ -40,4 +40,8 @@ public class ProfileRoleService {
         deleteByProfileId(profileId);
         create(profileId, roleList);
     }
+
+    public List<ProfileRoleEnum> getByProfileId(Long id) {
+        return repository.getRoleListByProfileId(id);
+    }
 }

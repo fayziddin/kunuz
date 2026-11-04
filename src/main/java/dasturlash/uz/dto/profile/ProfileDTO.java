@@ -1,4 +1,4 @@
-package dasturlash.uz.dto;
+package dasturlash.uz.dto.profile;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dasturlash.uz.enums.ProfileRoleEnum;
