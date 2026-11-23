@@ -1,6 +1,8 @@
 package dasturlash.uz.controller;
 
+import dasturlash.uz.dto.auth.AuthResponseDTO;
 import dasturlash.uz.dto.auth.AuthorizationDTO;
+import dasturlash.uz.dto.auth.RegistrationConfirmDTO;
 import dasturlash.uz.dto.auth.RegistrationDTO;
 import dasturlash.uz.dto.profile.ProfileDTO;
 import dasturlash.uz.service.AuthService;
@@ -21,7 +23,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ProfileDTO> login(@Valid @RequestBody AuthorizationDTO dto) {
+    public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody AuthorizationDTO dto) {
         return ResponseEntity.ok(authService.login(dto));
     }
+
+    @PostMapping("/registration/verification")
+    public ResponseEntity<String> verification(@RequestBody RegistrationConfirmDTO dto) {
+        return ResponseEntity.ok(authService.regSmsVerification(dto.getUsername(), dto.getCode()));
+    }
+
 }
