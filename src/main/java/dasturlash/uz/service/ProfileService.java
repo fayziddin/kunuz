@@ -28,7 +28,7 @@ public class ProfileService {
 
 
     public ProfileDTO create(ProfileDTO dto) {
-        Optional<ProfileEntity> optionalByUsername = repository.findByUsernameAndVisibleIsTrue(dto.getUsername());
+        Optional<ProfileEntity> optionalByUsername = repository.findByUsernameAndVisibleTrue(dto.getUsername());
         if(optionalByUsername.isPresent()){
             throw new IllegalArgumentException("username is present");
         }
@@ -52,7 +52,7 @@ public class ProfileService {
     }
 
     public ProfileDTO update(Long id, ProfileDTO dto) {
-        Optional<ProfileEntity> optionalByUsername = repository.findByUsernameAndVisibleIsTrue(dto.getUsername());
+        Optional<ProfileEntity> optionalByUsername = repository.findByUsernameAndVisibleTrue(dto.getUsername());
         if(optionalByUsername.isPresent() && !id.equals(optionalByUsername.get().getId())){
             throw new IllegalArgumentException("username is present");
         }

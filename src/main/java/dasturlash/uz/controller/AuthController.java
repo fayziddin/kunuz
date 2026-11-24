@@ -1,10 +1,9 @@
 package dasturlash.uz.controller;
 
 import dasturlash.uz.dto.auth.AuthResponseDTO;
-import dasturlash.uz.dto.auth.AuthorizationDTO;
+import dasturlash.uz.dto.auth.AuthRequestDTO;
 import dasturlash.uz.dto.auth.RegistrationConfirmDTO;
 import dasturlash.uz.dto.auth.RegistrationDTO;
-import dasturlash.uz.dto.profile.ProfileDTO;
 import dasturlash.uz.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody AuthorizationDTO dto) {
-        return ResponseEntity.ok(authService.login(dto));
+    public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody AuthRequestDTO dto) {
+//        return ResponseEntity.ok(authService.login(dto));
+        return ResponseEntity.ok(authService.authentication(dto));
     }
 
     @PostMapping("/registration/verification")

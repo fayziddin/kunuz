@@ -34,7 +34,7 @@ public class ProfileEntity {
     @Enumerated(EnumType.STRING)
     private ProfileStatusEnum status;
 
-    @OneToMany(mappedBy = "profile")
+    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
     private List<ProfileRoleEntity> roleList;
 
     @Column(name = "visible")

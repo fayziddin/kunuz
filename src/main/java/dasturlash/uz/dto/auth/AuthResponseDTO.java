@@ -9,10 +9,10 @@ import java.util.List;
 @Setter
 @Getter
 public class AuthResponseDTO {
-    private Long id;
     private String name;
     private String surname;
     private String username;
     private List<ProfileRoleEnum> roleList;
-    private String jwt;
+    private String jwtToken;
+    private String refreshToken;
 }

@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 public class JwtUtil {
-    private static final int tokenLiveTime = 1000 * 3600 * 24; // 1-day
+    private static final int tokenLiveTime = 1000 * 60 * 2; // 1-day
+    private static final int refreshTokenLiveTime = 1000 * 3600 * 24 * 30; // 1-day
     private static final String secretKey = "veryLongSecretmazgillattayevlasharaaxmojonjinnijonsurbetbekkiydirhonuxlatdibekloxovdangasabekochkozjonduxovmashaynikmaydagapchishularnioqiganbolsangizgapyoqaniqsizmazgi";
 
     public static String encode(Long id, String username, List<ProfileRoleEnum> roles) {
@@ -32,6 +33,20 @@ public class JwtUtil {
                 .compact();
     }
 
+    public static String refreshToken(Long id, String username, List<ProfileRoleEnum> roles) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("username", username);
+        extraClaims.put("role", roles);
+
+        return Jwts
+                .builder()
+                .setClaims(extraClaims)
+                .setSubject(String.valueOf(id))
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + refreshTokenLiveTime))
+                .signWith(getSignInKey())
+                .compact();
+    }
 
     public static JwtDTO decode(String token) {
         Claims claims = Jwts
@@ -43,8 +58,8 @@ public class JwtUtil {
 
         String id = claims.getSubject();
         String username = (String) claims.get("username");
-        String role = (String) claims.get("role");
-        return new JwtDTO(id, username, role);
+        List<ProfileRoleEnum> roles =  (List<ProfileRoleEnum>) claims.get("role");
+        return new JwtDTO(id, username, roles);
     }
 
     private static SecretKey getSignInKey() {

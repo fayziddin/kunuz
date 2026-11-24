@@ -1,9 +1,9 @@
 package dasturlash.uz.service;
 
+import dasturlash.uz.config.CustomUserDetails;
 import dasturlash.uz.dto.auth.AuthResponseDTO;
-import dasturlash.uz.dto.auth.AuthorizationDTO;
+import dasturlash.uz.dto.auth.AuthRequestDTO;
 import dasturlash.uz.dto.auth.RegistrationDTO;
-import dasturlash.uz.dto.profile.ProfileDTO;
 import dasturlash.uz.entity.ProfileEntity;
 import dasturlash.uz.enums.ProfileRoleEnum;
 import dasturlash.uz.enums.ProfileStatusEnum;
@@ -11,6 +11,11 @@ import dasturlash.uz.exceptions.AppBadException;
 import dasturlash.uz.repository.ProfileRepository;
 import dasturlash.uz.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +30,8 @@ public class AuthService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private ProfileRoleService profileRoleService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
 //    @Autowired
 //    private EmailSendingService emailSendingService;
@@ -39,7 +46,7 @@ public class AuthService {
 
     public String registration(RegistrationDTO dto) {
         // check
-        Optional<ProfileEntity> existOptional = profileRepository.findByUsernameAndVisibleIsTrue(dto.getUsername());
+        Optional<ProfileEntity> existOptional = profileRepository.findByUsernameAndVisibleTrue(dto.getUsername());
         if (existOptional.isPresent()) {
 //            throw new AppBadException("Username already exists");
 
@@ -70,8 +77,8 @@ public class AuthService {
         return "Tastiqlash kodi ketdi mazgi qara.";
     }
 
-    public AuthResponseDTO login(AuthorizationDTO dto) {
-        Optional<ProfileEntity> profileOptional = profileRepository.findByUsernameAndVisibleIsTrue(dto.getUsername());
+    public AuthResponseDTO login(AuthRequestDTO dto) {
+        Optional<ProfileEntity> profileOptional = profileRepository.findByUsernameAndVisibleTrue(dto.getUsername());
         if (profileOptional.isEmpty()) {
             throw new AppBadException("Username or password wrong");
         }
@@ -83,18 +90,40 @@ public class AuthService {
             throw new AppBadException("User in wrong status");
         }
         AuthResponseDTO response = new AuthResponseDTO();
-        response.setId(entity.getId());
+//        response.setId(entity.getId());
         response.setName(entity.getName());
         response.setSurname(entity.getSurname());
         response.setUsername(entity.getUsername());
         response.setRoleList(profileRoleService.getByProfileId(entity.getId()));
-        response.setJwt(JwtUtil.encode(entity.getId(), entity.getUsername(), response.getRoleList()));
+        response.setJwtToken(JwtUtil.encode(entity.getId(), entity.getUsername(), response.getRoleList()));
+        response.setRefreshToken(JwtUtil.refreshToken(entity.getId(), entity.getUsername(), response.getRoleList()));
         return response;
+    }
+
+    public AuthResponseDTO authentication(AuthRequestDTO auth) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(auth.getUsername(), auth.getPassword()));
+
+            if (authentication.isAuthenticated()) {
+                CustomUserDetails profile = (CustomUserDetails) authentication.getPrincipal();
+                AuthResponseDTO response = new AuthResponseDTO();
+                response.setName(profile.getName());
+                response.setSurname(profile.getSurname());
+                response.setUsername(profile.getUsername());
+                response.setRoleList(profile.getRoleList());
+                response.setJwtToken(JwtUtil.encode(profile.getId(), profile.getUsername(), profile.getRoleList()));
+                response.setRefreshToken(JwtUtil.refreshToken(profile.getId(), profile.getUsername(), profile.getRoleList()));
+                return response;
+            }
+        } catch (BadCredentialsException e) {
+            throw new UsernameNotFoundException("Wrong username or password");
+        }
+        throw new UsernameNotFoundException("Wrong username or password");
     }
 
 
     public String regSmsVerification(String username, Integer smsCode) {
-        Optional<ProfileEntity> existOptional = profileRepository.findByUsernameAndVisibleIsTrue(username);
+        Optional<ProfileEntity> existOptional = profileRepository.findByUsernameAndVisibleTrue(username);
         if (existOptional.isEmpty()) {
             throw new AppBadException("Username not found");
         }
