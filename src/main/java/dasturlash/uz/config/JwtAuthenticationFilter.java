@@ -3,12 +3,14 @@ package dasturlash.uz.config;
 import dasturlash.uz.dto.auth.JwtDTO;
 import dasturlash.uz.service.CustomUserDetailsService;
 import dasturlash.uz.util.JwtUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -56,9 +58,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             filterChain.doFilter(request, response); // Continue the filter chain
-        } catch (JwtException | UsernameNotFoundException e) {
-            filterChain.doFilter(request, response); // Continue the filter chain
+        } catch (ExpiredJwtException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Unauthorized");
+            //filterChain.doFilter(request, response); // Continue the filter chain
             return;
+        } catch (JwtException e) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().write("Invalid jwt");
+            //filterChain.doFilter(request, response); // Continue the filter chain
+            return;
+        } catch (UsernameNotFoundException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Bad request");
         }
     }
 }

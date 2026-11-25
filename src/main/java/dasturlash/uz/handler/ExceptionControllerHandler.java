@@ -1,5 +1,6 @@
 package dasturlash.uz.handler;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -35,7 +36,7 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<?> handle(IllegalArgumentException e){
+    public ResponseEntity<?> handle(IllegalArgumentException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
@@ -49,9 +50,9 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
     }
 
-    @ExceptionHandler({RuntimeException.class})
-    public ResponseEntity<String> handler(RuntimeException e) {
-        e.printStackTrace();
-        return ResponseEntity.internalServerError().body(e.getMessage());
+    @ExceptionHandler({ExpiredJwtException.class})
+    public ResponseEntity<?> handler(ExpiredJwtException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).
+                body(Map.of("error", "TOKEN_EXPIRED", "message", "JWT token expired"));
     }
 }
